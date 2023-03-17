@@ -7,3 +7,8 @@
 #include <sys/param.h>
 #include <time.h>
 
+int main(char *argc[], char *argv[], int argt){
+
+
+    return 0;
+};
