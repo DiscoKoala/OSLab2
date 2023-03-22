@@ -11,6 +11,7 @@
 #include <fstream>
 #include <time.h>
 #include "Process.hpp"
+#include "FCFS.hpp"
 
 using namespace std;
 
