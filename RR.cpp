@@ -12,10 +12,11 @@
 #include <iomanip>
 #include <time.h>
 #include "Process.hpp"
+#include "RR.hpp"
 
 using namespace std;
 
-int rr(){
+int Round::rr(string fileName, int quantum){
 
   printf("************************************************************");
   printf("************* Scheduling algorithm : RR ********************");

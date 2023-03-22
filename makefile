@@ -1,10 +1,21 @@
-#makefile for Lab 2 - Root folder
 
-CC = gcc
-CFLAGS = -g -Wall
+SOURCES = main.cpp SRTF.cpp RR.cpp FCFS.cpp
 
-main: main.cpp
-	$(CC) $(CFLAGS) -o myscheduler main.cpp
+TARGET = myscheduler
+
+CC = g++
+
+CXXFLAGS = -g -std=c++11
+
+OBJS:= ${SOURCES:.cpp=.o}
+
+$(TARGET): $(OBJS)
+	$(CC) -o $@ $(OBJS)
+
+.cpp.o:
+	$(CC) -c $(CXXFLAGS) $(INCDIR) $<
+
+$(INCS): $(OBJS)
 
 clean:
-	rm -f myscheduler main.o core
+	rm -f $(OBJS) $(TARGET) core

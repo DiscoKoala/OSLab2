@@ -15,10 +15,11 @@
 
 using namespace std;
 
-int fcfs(){
+int First::fcfs(string fileName){
 
   ifstream fin;
   int pid, arrivalTime, burstTime;
+  string line;
 
   std::cout << "************************************************************" << std::endl;
   std::cout << "************ Scheduling algorithm : FCFS *******************" << std::endl;
@@ -26,5 +27,11 @@ int fcfs(){
 
   fin.open("input.txt");
 
+  while(getline(fin, line)){
+    cout << line << endl;
+  };
+
+  fin.close();
+  
   return 0;
 }

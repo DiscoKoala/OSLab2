@@ -6,8 +6,10 @@ class First{
     public:
 
         First();
+        First(string fileName);
 
-        int fcfs();
+        int fcfs(string fileName);
+
 };
 
 #endif

@@ -6,8 +6,9 @@ class Shortest{
     public:
 
         Shortest();
+        Shortest(string fileName);
 
-        int srtf();
+        int srtf(string fileName);
 };
 
 #endif

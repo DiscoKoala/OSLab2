@@ -9,10 +9,11 @@
 #include <fstream>
 #include <iomanip>
 #include "Process.hpp"
+#include "SRTF.hpp"
 
 using namespace std;
 
-int srtf(){
+int Shortest::srtf(string fileName){
 
 
   printf("************************************************************");
