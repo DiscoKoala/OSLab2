@@ -13,9 +13,21 @@ using namespace std;
 
 int rr(string fileName, int quantum){
 
-  printf("************************************************************");
-  printf("************* Scheduling algorithm : RR ********************");
-  printf("************************************************************");
+    ifstream fin;
+    int pid, arrivalTime, burstTime;
+    string line;
+
+    printf("************************************************************");
+    printf("************* Scheduling algorithm : RR ********************");
+    printf("************************************************************");
+
+    fin.open("input.txt");
+
+    while(getline(fin, line)){
+        cout << line << endl;
+    };
+
+    fin.close();
 
   return 0;
 }
