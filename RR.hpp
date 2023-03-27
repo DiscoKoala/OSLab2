@@ -1,16 +1,23 @@
 #ifndef ROUND
 #define ROUND
 
-class Round{
+#include <string.h>
+#include <iostream>
+#include <fstream>
+#include <stdlib.h>
+#include <unistd.h>
+#include <iomanip>
+#include <time.h>
 
-    public:
+using namespace std;
 
-        Round();
-        Round(string fileName, int q);
+int rr(string fileName, int quantum){
 
-        int rr(string fileName, int quantum);
+  printf("************************************************************");
+  printf("************* Scheduling algorithm : RR ********************");
+  printf("************************************************************");
 
-        int quantum;
-};
+  return 0;
+}
 
 #endif

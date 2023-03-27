@@ -1,14 +1,23 @@
 #ifndef SHORT
 #define SHORT
 
-class Shortest{
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include "Process.hpp"
+#include "SRTF.hpp"
 
-    public:
+using namespace std;
 
-        Shortest();
-        Shortest(string fileName);
+int srtf(string fileName){
 
-        int srtf(string fileName);
-};
 
+  printf("************************************************************");
+  printf("************ Scheduling algorithm : SRTF *******************");
+  printf("************************************************************");
+
+
+  return 0;
+}
 #endif
