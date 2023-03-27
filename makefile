@@ -1,5 +1,5 @@
 
-SOURCES = main.cpp SRTF.cpp RR.cpp FCFS.cpp
+SOURCES = main.cpp
 
 TARGET = myscheduler
 
