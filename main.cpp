@@ -18,16 +18,15 @@ int main(int argc, char *argv[]){
 
   string fileName = argv[1];
   string schedule = argv[2];
-  char *q = argv[3];
-  int quantum = int(*q);
-
+  
   transform(schedule.begin(), schedule.end(), schedule.begin(), ::toupper);
 
   if(schedule == "RR"){
+    char *q = argv[3];
+    int quantum = int(*q);
     rr(fileName, quantum);
 
   } else if(schedule == "FCFS"){
-    cout << "Hello." << endl;
     fcfs(fileName);
 
   } else if(schedule == "SRTF"){
