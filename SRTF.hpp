@@ -32,7 +32,7 @@ int srtf(string fileName){
     obj.processStatus = "New Process";
     p[i] = obj;
     i++;
-  };
+   };
 
     fin.close();
 
