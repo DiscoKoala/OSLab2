@@ -13,7 +13,7 @@ using namespace std;
 
 int rr(string fileName, int quantum){
 
-    process queue[50];
+    process *p = new process[PC];
     process obj;
     ifstream fin;
     int i = 0;
@@ -33,7 +33,7 @@ int rr(string fileName, int quantum){
         // Read data from file into process object and add to array.
         fin >> obj.pidNum >> obj.arrival >> obj.burstTime;
         obj.processStatus = "New Process";
-        queue[i] = obj;
+        p[i] = obj;
         i++;
     };
 
