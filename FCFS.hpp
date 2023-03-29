@@ -15,6 +15,8 @@
 
 using namespace std;
 
+int PC = 26;
+
 struct process{
     int pidNum;
     int arrival;
@@ -27,7 +29,7 @@ struct process{
 
 int fcfs(string fileName){
 
-    process p[50];
+    process *p = new process[PC];
     process obj, obj1;
     ifstream fin;
     int totalTime = 0;
@@ -35,7 +37,7 @@ int fcfs(string fileName){
 
     cout << "************************************************************" << endl;
     cout << "************ Scheduling algorithm : FCFS *******************" << endl;
-    cout << "************************************************************" << endl;
+    cout << "************************************************************" << endl << endl;
 
     fin.open("input.txt", ios::in);
 
@@ -46,19 +48,26 @@ int fcfs(string fileName){
         };
         fin >> obj.pidNum >> obj.arrival >> obj.burstTime;
         obj.processStatus = "New Process";
-        totalTime += obj.burstTime;
         p[i] = obj;
         i++;
     };
 
-    p[0].waitTime = 0;
-    p[0].timeCompleted = p[0].burstTime;
-    p[0].turnAround = p[0].burstTime;
+    totalTime = totalTime + p[0].arrival;
 
-    for(i = 1; i < totalTime; i++){
-      obj = p[i];
+    for(i = 0; i < PC; i++){
+      totalTime = totalTime + p[i].burstTime;
+      p[i].timeCompleted = totalTime;
+      p[i].turnAround = p[i].timeCompleted - p[i].arrival;
+      p[i].waitTime = p[i].turnAround - p[i].burstTime;
 
+      if(totalTime < p[i+1].arrival){
+        int t = p[i+1].arrival - totalTime;
+        totalTime = totalTime + t;
+      };
   
+      cout << "Completion time: "<< p[i].timeCompleted << endl;
+      cout << "Turn around time: " << p[i].turnAround << endl;
+      cout << "Wait time: " << p[i].waitTime << endl;
     };
 
     fin.close();
