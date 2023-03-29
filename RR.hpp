@@ -7,39 +7,43 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <iomanip>
-#include <time.h>
+#include <queue>
 
 using namespace std;
 
-int rr(string fileName, int quantum){
+int rr(string fileName, int quanta){
 
-    process *p = new process[PC];
-    process obj;
-    ifstream fin;
-    int i = 0;
+  process *p = new process[PC];
+  process obj;
+  ifstream fin;
+  int i = 0;
+  int timer = 0;
+  bool complete[PC];
 
-    printf("************************************************************");
-    printf("************* Scheduling algorithm : RR ********************");
-    printf("************************************************************");
+  printf("************************************************************\n");
+  printf("************* Scheduling algorithm : RR ********************\n");
+  printf("************************************************************\n");
 
-    fin.open("input.txt");
+  fin.open("input.txt");
 
-   while(true){
+  while(true){
 
-        if(fin.eof()){
-            break;
-        };
-
-        // Read data from file into process object and add to array.
-        fin >> obj.pidNum >> obj.arrival >> obj.burstTime;
-        obj.processStatus = "New Process";
-        p[i] = obj;
-        i++;
+    if(fin.eof()){
+      break;
     };
 
-    fin.close();
+    // Read data from file into process object and add to array.
+    fin >> obj.pidNum >> obj.arrival >> obj.burstTime;
+    obj.processStatus = "New Process";
+    complete[i] = false;
+    p[i] = obj;
+    i++;
+  };
+  fin.close();
 
-  return 0;
+  
+
+return 0;
 }
 
 #endif

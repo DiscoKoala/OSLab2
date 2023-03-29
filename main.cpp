@@ -23,8 +23,8 @@ int main(int argc, char *argv[]){
 
   if(schedule == "RR"){
     char *q = argv[3];
-    int quantum = int(*q);
-    rr(fileName, quantum);
+    int quanta = int(*q);
+    rr(fileName, quanta);
 
   } else if(schedule == "FCFS"){
     fcfs(fileName);

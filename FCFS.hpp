@@ -4,6 +4,7 @@
   Wesley B Johnson
   Due date: April 04, 2023
   Function: First Come First Server Process Scheduler
+  Source: https://www.geeksforgeeks.org/program-for-fcfs-cpu-scheduling-set-2-processes-with-different-arrival-times/?ref=rp
 */
 #include <string>
 #include <iostream>
