@@ -15,7 +15,7 @@
 
 using namespace std;
 
-int PC = 26;
+int PC = 10;
 
 struct process{
     int pidNum;
@@ -70,6 +70,9 @@ int fcfs(string fileName){
       cout << "Wait time: " << p[i].waitTime << endl;
     };
 
+    cout << "" << endl;
+    cout << "*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  * " << endl;
+    cout << "0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29" << endl;
     fin.close();
   
   return 0;
