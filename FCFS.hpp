@@ -22,10 +22,12 @@ struct process{
     int pidNum;
     int arrival;
     int burstTime;
+    int burstTimeRemaining;
     int timeCompleted = 0;
     int waitTime = 0;
     int turnAround = 0;
     string processStatus;
+    bool inQueue;
 };
 
 int fcfs(string fileName){
