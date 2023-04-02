@@ -50,6 +50,7 @@ int rr(string fileName, int quanta){
 
     // Read data from file into process object and add to array.
     fin >> obj.pidNum >> obj.arrival >> obj.burstTime;
+    obj.burstTimeRemaining = obj.burstTime;
     obj.processStatus = "New Process";
     p[i] = obj;
     i++;
@@ -78,7 +79,7 @@ void updateQueue(process p[], int n, int quanta, queue<int> &readyQueue, int cur
   int i = readyQueue.front();
   readyQueue.pop();
 
-  if(p[i].burstTime <= quanta){
+  if(p[i].burstTimeRemaining <= quanta){
     p[i].processStatus = "Complete";
     currentTime += p[i].burstTimeRemaining;
     p[i].timeCompleted = currentTime;
