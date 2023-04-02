@@ -20,6 +20,8 @@ void updateQueue(process p[], int n, int quanta, queue<int> &readyQueue, int bur
 
 void checkNewArrivals(process p[], const int n, const int currentTime, queue<int> &readyQueue);
 
+void averageTimes(float &aveWaitTime, float &aveBurstTime, float & aveTurnAround, process p[]);
+
 int rr(string fileName, int quanta){
 
   process *p = new process[PC];
@@ -29,7 +31,10 @@ int rr(string fileName, int quanta){
   int i = 0;
   int currentTime = 0;
   int programsExecuted = 0;
-
+  int contextSwitches = 0;
+  float aveBurstTime = 0;
+  float aveWaitTime = 0;
+  float aveTurnAround = 0;
 
   printf("************************************************************\n");
   printf("************* Scheduling algorithm : RR ********************\n");
@@ -57,7 +62,14 @@ int rr(string fileName, int quanta){
   while(!readyQueue.empty()){
     updateQueue(p, PC, quanta, readyQueue, currentTime, programsExecuted);
   }
+
+  averageTimes(aveWaitTime, aveBurstTime, aveTurnAround, p);
   
+    cout << "Average CPU burst time: " << aveBurstTime << " ms" << endl;
+    cout << "Average wait time:  " << aveWaitTime << " ms" << endl;
+    cout << "Average turn around time: " << aveTurnAround << " ms" << endl;
+    cout << "Total No. of Context Switches performed: 0" << " ms" << endl;
+
 
 return 0;
 }
@@ -92,6 +104,7 @@ void updateQueue(process p[], int n, int quanta, queue<int> &readyQueue, int cur
 
       readyQueue.push(i);
     };
+
   };
 };
 
@@ -105,6 +118,19 @@ void checkNewArrivals(process p[], const int n, const int currentTime, queue<int
     }
   }
 
+};
+
+void averageTimes(float &aveWaitTime, float &aveBurstTime, float & aveTurnAround, process p[]){
+
+  for(int i = 0; i < PC; i++){
+    aveBurstTime += p[i].burstTime;
+    aveWaitTime += p[i].waitTime;
+    aveTurnAround += p[i].turnAround;
+  };
+
+  aveBurstTime = aveBurstTime/PC;
+  aveWaitTime = aveWaitTime/PC;
+  aveTurnAround = aveTurnAround/PC;
 };
 
 
