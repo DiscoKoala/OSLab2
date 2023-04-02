@@ -66,11 +66,10 @@ int rr(string fileName, int quanta){
 
   averageTimes(aveWaitTime, aveBurstTime, aveTurnAround, p);
   
-    cout << "Average CPU burst time: " << aveBurstTime << " ms" << endl;
-    cout << "Average wait time:  " << aveWaitTime << " ms" << endl;
-    cout << "Average turn around time: " << aveTurnAround << " ms" << endl;
-    cout << "Total No. of Context Switches performed: 0" << " ms" << endl;
-
+  cout << "Average CPU burst time: " << aveBurstTime << " ms" << endl;
+  cout << "Average wait time:  " << aveWaitTime << " ms" << endl;
+  cout << "Average turn around time: " << aveTurnAround << " ms" << endl;
+  cout << "Total No. of Context Switches performed: 0" << " ms" << endl;
 
 return 0;
 }
@@ -83,13 +82,13 @@ void updateQueue(process p[], int n, int quanta, queue<int> &readyQueue, int cur
     p[i].processStatus = "Complete";
     currentTime += p[i].burstTimeRemaining;
     p[i].timeCompleted = currentTime;
-    p[i]. waitTime = ( p[i].timeCompleted - p[i].arrival - p[i]. burstTime );
-    p[i].turnAround = ( p[i].waitTime + p[i].burstTime );
+    p[i].waitTime = ( p[i].timeCompleted - p[i].arrival - p[i].burstTime );
 
     if(p[i].waitTime < 0){
       p[i].waitTime = 0;
     };
-
+    
+    p[i].turnAround = ( p[i].waitTime + p[i].burstTime );
     p[i].burstTimeRemaining = 0;
 
     if(programsExecuted != n){
@@ -127,11 +126,15 @@ void averageTimes(float &aveWaitTime, float &aveBurstTime, float & aveTurnAround
     aveBurstTime += p[i].burstTime;
     aveWaitTime += p[i].waitTime;
     aveTurnAround += p[i].turnAround;
+
+    cout << p[i].burstTime << " " <<p[i].waitTime << " " << p[i].turnAround << endl;
   };
 
   aveBurstTime = aveBurstTime/PC;
   aveWaitTime = aveWaitTime/PC;
   aveTurnAround = aveTurnAround/PC;
+
+
 };
 
 
