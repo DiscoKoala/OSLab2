@@ -27,7 +27,7 @@ struct process{
     int waitTime = 0;
     int turnAround = 0;
     string processStatus;
-    bool inQueue;
+    bool inQueue = false;
 };
 
 int fcfs(string fileName){

@@ -23,7 +23,7 @@ int main(int argc, char *argv[]){
 
   if(schedule == "RR"){
     char *q = argv[3];
-    int quanta = int(*q);
+    int quanta = atoi(q);
     rr(fileName, quanta);
 
   } else if(schedule == "FCFS"){

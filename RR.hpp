@@ -16,9 +16,10 @@
 
 using namespace std;
 
-void updateQueue(process p[], int n, int quanta, queue<int> &readyQueue, int burstTime, int &programsExecuted);
+// See definitions below.
+void updateQueue(process p[], int n, int quanta, queue<int> &readyQueue, int &burstTime, int &programsExecuted, int &contextSwitches);
 
-void checkNewArrivals(process p[], const int n, const int currentTime, queue<int> &readyQueue);
+void checkNewArrivals(process p[], const int n, const int &currentTime, queue<int> &readyQueue);
 
 void averageTimes(float &aveWaitTime, float &aveBurstTime, float & aveTurnAround, process p[]);
 
@@ -57,11 +58,12 @@ int rr(string fileName, int quanta){
   };
   fin.close();
 
+  // Initiaillzing queue with first process.
   readyQueue.push(0);
   p[0].inQueue = true;
 
   while(!readyQueue.empty()){
-    updateQueue(p, PC, quanta, readyQueue, currentTime, programsExecuted);
+    updateQueue(p, PC, quanta, readyQueue, currentTime, programsExecuted, contextSwitches);
   }
 
   averageTimes(aveWaitTime, aveBurstTime, aveTurnAround, p);
@@ -69,16 +71,21 @@ int rr(string fileName, int quanta){
   cout << "Average CPU burst time: " << aveBurstTime << " ms" << endl;
   cout << "Average wait time:  " << aveWaitTime << " ms" << endl;
   cout << "Average turn around time: " << aveTurnAround << " ms" << endl;
-  cout << "Total No. of Context Switches performed: 0" << " ms" << endl;
+  cout << "Total No. of Context Switches performed: " << contextSwitches << endl;
 
 return 0;
 }
 
-void updateQueue(process p[], int n, int quanta, queue<int> &readyQueue, int currentTime, int &programsExecuted){
+/*
+ With each iteration, remaining burst times are checked against the quanta. 
+ The process at the front of the queue is popped off the front
+*/
+void updateQueue(process p[], int n, int quanta, queue<int> &readyQueue, int &currentTime, int &programsExecuted, int &contextSwitches){
   int i = readyQueue.front();
   readyQueue.pop();
+  contextSwitches++;
 
-  if(p[i].burstTimeRemaining <= quanta){
+  if(p[i].burstTimeRemaining <= quanta && p[i].burstTimeRemaining > 0){
     p[i].processStatus = "Complete";
     currentTime += p[i].burstTimeRemaining;
     p[i].timeCompleted = currentTime;
@@ -94,26 +101,28 @@ void updateQueue(process p[], int n, int quanta, queue<int> &readyQueue, int cur
     if(programsExecuted != n){
       checkNewArrivals(p, n, currentTime, readyQueue);
     }
-    else{
+
+  }
+  else{
       p[i].burstTimeRemaining -= quanta;
       currentTime += quanta;
+      p[i].processStatus = "In Process";
 
       if(programsExecuted != n){
         checkNewArrivals(p, n, currentTime, readyQueue);
       };
-
       readyQueue.push(i);
     };
-
-  };
+    
 };
 
-void checkNewArrivals(process p[], const int n, const int currentTime, queue<int> &readyQueue){
+void checkNewArrivals(process p[], const int n, const int &currentTime, queue<int> &readyQueue){
   for(int i = 0; i < n; i++){
     process proc = p[i];
 
     if(proc.arrival <= currentTime && !proc.inQueue && proc.processStatus != "Complete"){
       p[i].processStatus = "New Process";
+      p[i].inQueue = true;
       readyQueue.push(i);
     }
   }
@@ -126,8 +135,6 @@ void averageTimes(float &aveWaitTime, float &aveBurstTime, float & aveTurnAround
     aveBurstTime += p[i].burstTime;
     aveWaitTime += p[i].waitTime;
     aveTurnAround += p[i].turnAround;
-
-    cout << p[i].burstTime << " " <<p[i].waitTime << " " << p[i].turnAround << endl;
   };
 
   aveBurstTime = aveBurstTime/PC;
