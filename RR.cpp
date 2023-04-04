@@ -123,18 +123,3 @@ void Process::checkNewArrivals(process p[], const int n, const int &currentTime,
   }
 
 };
-
-void Process::averageTimes(float &aveWaitTime, float &aveBurstTime, float & aveTurnAround, process p[]){
-
-  for(int i = 0; i < PC; i++){
-    aveBurstTime += p[i].burstTime;
-    aveWaitTime += p[i].waitTime;
-    aveTurnAround += p[i].turnAround;
-  };
-
-  aveBurstTime = aveBurstTime/PC;
-  aveWaitTime = aveWaitTime/PC;
-  aveTurnAround = aveTurnAround/PC;
-
-
-};
