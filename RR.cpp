@@ -16,7 +16,6 @@
 
 using namespace std;
 
-int PC = 10;
 
 // See definitions below.
 int Process::rr(string fileName, int quanta){

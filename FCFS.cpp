@@ -17,8 +17,6 @@
 
 using namespace std;
 
-int PC = 10;
-
 int Process::fcfs(string fileName){
 
     process *p = new process[PC];

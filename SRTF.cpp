@@ -7,8 +7,6 @@
 
 using namespace std;
 
-int PC = 10;
-
 int Process::srtf(string fileName){
 
     std::vector<int> readyQueue;

@@ -20,6 +20,9 @@ class Process{
             bool inQueue = false;
         };  
 
+        int PC = 10;
+
+
         int rr(std::string fileName, int quanta);
         int srtf(std::string fileName);
         int fcfs(std::string fileName);
