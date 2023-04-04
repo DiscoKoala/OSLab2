@@ -1,3 +1,9 @@
+/*  
+  Wesley B Johnson
+  Due date: April 04, 2023
+  Function: Shortest Remaing Time First Scheduler
+  Source: https://www.geeksforgeeks.org/shortest-remaining-time-first-preemptive-sjf-scheduling-algorithm/?ref=rp
+*/
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -60,39 +66,46 @@ int Process::srtf(string fileName){
 }
 
 void Process::updateVQueue(process p[], int n, vector<int> &readyQueue, int &currentTime, int &programsExecuted, int &contextSwitches){
-  int i = compareBursts(p, PC, readyQueue);
-  readyQueue.erase(readyQueue.begin()+i);
-  contextSwitches++;
+  int complete = 0;
+  bool check;
 
-  if(p[i].burstTimeRemaining <= 0){
-    p[i].processStatus = "Complete";
-    currentTime += p[i].burstTimeRemaining;
-    p[i].timeCompleted = currentTime;
-    p[i].waitTime = ( p[i].timeCompleted - p[i].arrival - p[i].burstTime );
+  // Loop process until all processes are completed.
+  while (complete != n){
 
-    if(p[i].waitTime < 0){
-      p[i].waitTime = 0;
+    if(int i = compareBursts(p, PC, currentTime, readyQueue) > 0){
+      contextSwitches++;
+      check = true;
+
+      if(p[i].burstTimeRemaining <= 0){
+        p[i].processStatus = "Complete";
+        p[i].timeCompleted = currentTime + 1;
+        p[i].waitTime = ( p[i].timeCompleted - p[i].arrival - p[i].burstTime );
+
+        if(p[i].waitTime < 0){
+          p[i].waitTime = 0;
+        };
+        
+        p[i].turnAround = ( p[i].waitTime + p[i].burstTime );
+        p[i].burstTimeRemaining = 0;
+
+        if(programsExecuted != n){
+          checkNewArrivals(p, n, currentTime, readyQueue);
+        }
+        readyQueue.erase(readyQueue.begin()+(i-1));
+        complete++;
+      }
+
+      else{
+          p[i].burstTimeRemaining--;
+          p[i].processStatus = "In Process";
+
+          if(programsExecuted != n){
+            checkNewArrivals(p, n, currentTime, readyQueue);
+          };
+        };
     };
-    
-    p[i].turnAround = ( p[i].waitTime + p[i].burstTime );
-    p[i].burstTimeRemaining = 0;
-
-    if(programsExecuted != n){
-      checkNewArrivals(p, n, currentTime, readyQueue);
-    }
-
-  }
-  else{
-      p[i].burstTimeRemaining -= p[i].startTime;
-      currentTime;
-      p[i].processStatus = "In Process";
-
-      if(programsExecuted != n){
-        checkNewArrivals(p, n, currentTime, readyQueue);
-      };
-      readyQueue.push_back(i);
-    };
-    
+    currentTime++;
+  };
 };
 
 void Process::checkNewArrivals(process p[], const int n, const int &currentTime, vector<int> &readyQueue){
@@ -122,12 +135,12 @@ void Process::averageTimes(float &aveWaitTime, float &aveBurstTime, float & aveT
 
 };
 
-int Process::compareBursts(process p[], int n, vector<int>readyQueue){
+int Process::compareBursts(process p[], int n, int &currentTime, vector<int>readyQueue){
   int min = p[0].burstTimeRemaining;
   int idx = 0;
 
   for(int i = 0; i < n; i++){
-    if (p[i].burstTimeRemaining < min){
+    if (p[i].burstTimeRemaining < min && p[i].arrival <= currentTime){
       min = p[i].burstTimeRemaining;
       idx = i;
     };
