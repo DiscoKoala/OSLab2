@@ -1,6 +1,5 @@
-#ifndef ROUND
-#define ROUND
-/*
+
+/*  
   Wesley B Johnson
   Due date: April 04, 2023
   Function: Round Robin Scheduler
@@ -13,17 +12,14 @@
 #include <unistd.h>
 #include <iomanip>
 #include <queue>
+#include "Process.hpp"
 
 using namespace std;
 
+int PC = 10;
+
 // See definitions below.
-void updateQueue(process p[], int n, int quanta, queue<int> &readyQueue, int &burstTime, int &programsExecuted, int &contextSwitches);
-
-void checkNewArrivals(process p[], const int n, const int &currentTime, queue<int> &readyQueue);
-
-void averageTimes(float &aveWaitTime, float &aveBurstTime, float & aveTurnAround, process p[]);
-
-int rr(string fileName, int quanta){
+int Process::rr(string fileName, int quanta){
 
   process *p = new process[PC];
   queue<int> readyQueue;
@@ -80,7 +76,7 @@ return 0;
  With each iteration, remaining burst times are checked against the quanta. 
  The process at the front of the queue is popped off the front
 */
-void updateQueue(process p[], int n, int quanta, queue<int> &readyQueue, int &currentTime, int &programsExecuted, int &contextSwitches){
+void Process::updateQueue(process p[], int n, int quanta, queue<int> &readyQueue, int &currentTime, int &programsExecuted, int &contextSwitches){
   int i = readyQueue.front();
   readyQueue.pop();
   contextSwitches++;
@@ -116,7 +112,7 @@ void updateQueue(process p[], int n, int quanta, queue<int> &readyQueue, int &cu
     
 };
 
-void checkNewArrivals(process p[], const int n, const int &currentTime, queue<int> &readyQueue){
+void Process::checkNewArrivals(process p[], const int n, const int &currentTime, queue<int> &readyQueue){
   for(int i = 0; i < n; i++){
     process proc = p[i];
 
@@ -129,7 +125,7 @@ void checkNewArrivals(process p[], const int n, const int &currentTime, queue<in
 
 };
 
-void averageTimes(float &aveWaitTime, float &aveBurstTime, float & aveTurnAround, process p[]){
+void Process::averageTimes(float &aveWaitTime, float &aveBurstTime, float & aveTurnAround, process p[]){
 
   for(int i = 0; i < PC; i++){
     aveBurstTime += p[i].burstTime;
@@ -143,6 +139,3 @@ void averageTimes(float &aveWaitTime, float &aveBurstTime, float & aveTurnAround
 
 
 };
-
-
-#endif

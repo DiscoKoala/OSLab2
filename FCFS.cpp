@@ -13,24 +13,13 @@
 #include <unistd.h>
 #include <fstream>
 #include <time.h>
+#include "Process.hpp"
 
 using namespace std;
 
 int PC = 10;
 
-struct process{
-    int pidNum;
-    int arrival;
-    int burstTime;
-    int burstTimeRemaining;
-    int timeCompleted = 0;
-    int waitTime = 0;
-    int turnAround = 0;
-    string processStatus;
-    bool inQueue = false;
-};
-
-int fcfs(string fileName){
+int Process::fcfs(string fileName){
 
     process *p = new process[PC];
     process obj;
