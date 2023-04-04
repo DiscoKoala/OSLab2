@@ -8,9 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include "FCFS.hpp"
-#include "RR.hpp"
-#include "SRTF.hpp"
+#include "Process.hpp"
 
 using namespace std;
 
@@ -18,19 +16,21 @@ int main(int argc, char *argv[]){
 
   string fileName = argv[1];
   string schedule = argv[2];
+
+  Process procObj;
   
   transform(schedule.begin(), schedule.end(), schedule.begin(), ::toupper);
 
   if(schedule == "RR"){
     char *q = argv[3];
     int quanta = atoi(q);
-    rr(fileName, quanta);
+    procObj.rr(fileName, quanta);
 
   } else if(schedule == "FCFS"){
-    fcfs(fileName);
+    procObj.fcfs(fileName);
 
   } else if(schedule == "SRTF"){
-    srtf(fileName);
+    procObj.srtf(fileName);
 
   } else {
     cout << "Process schedule unknown." << endl;
