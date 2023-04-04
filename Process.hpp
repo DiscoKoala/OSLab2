@@ -26,13 +26,11 @@ class Process{
 
         void updateVQueue(process p[], int n, std::vector<int> &readyQueue, int &currentTime, int &programsExecuted, int &contextSwitches);
         void checkNewArrivals(process p[], const int n,  const int &currentTime, std::vector<int> &readyQueue);
-        void averageTimes(float &aveWaitTime, float &aveBurstTime, float & aveTurnAround, process p[]);
         int compareBursts(process p[], int n, std::vector<int>readyQueue);
 
         void updateQueue(process p[], int n, int quanta, std::queue<int> &readyQueue, int &currentTime, int &programsExecuted, int &contextSwitches);
         void checkNewArrivals(process p[], const int n,  const int &currentTime, std::queue<int> &readyQueue);
         void averageTimes(float &aveWaitTime, float &aveBurstTime, float & aveTurnAround, process p[]);
-        int compareBursts(process p[], int n, std::vector<int>readyQueue);
 };
 
 #endif
