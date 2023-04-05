@@ -27,7 +27,7 @@ int Process::srtf(string fileName){
     float aveWaitTime = 0;
     float aveTurnAround = 0;
 
-    printf("************************************************************\n");
+    printf("\n************************************************************\n");
     printf("************ Scheduling algorithm : SRTF *******************\n");
     printf("************************************************************\n\n");
 
@@ -57,7 +57,7 @@ int Process::srtf(string fileName){
   cout << "Average wait time:  " << aveWaitTime << " ms" << endl;
   cout << "Average turn around time: " << aveTurnAround << " ms" << endl;
   cout << "Total No. of Context Switches performed: " << contextSwitches << endl;
-  
+
   return 0;
 }
 
@@ -111,6 +111,7 @@ void Process::updateVQueue(process p[], int n, int &currentTime, int &programsEx
       if(p[idx].waitTime < 0){
         p[idx].waitTime = 0;
       };
+      programsExecuted++;
     }
 
     // Top half of Gantt chart and increment time.

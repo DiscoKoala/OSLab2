@@ -17,10 +17,13 @@ int main(int argc, char *argv[]){
   string fileName = argv[1];
   string schedule = argv[2];
 
+  // Instatiate process object.
   Process procObj;
   
+  // Case insensitivity
   transform(schedule.begin(), schedule.end(), schedule.begin(), ::toupper);
 
+  // Run scheduling algorithm depending on selection.
   if(schedule == "RR"){
     char *q = argv[3];
     int quanta = atoi(q);

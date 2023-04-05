@@ -27,9 +27,9 @@ int Process::fcfs(string fileName){
     float aveWaitTime = 0;
     float aveTurnAround = 0;
 
-    cout << "************************************************************" << endl;
-    cout << "************ Scheduling algorithm : FCFS *******************" << endl;
-    cout << "************************************************************" << endl << endl;
+    printf("\n************************************************************");
+    printf("\n************ Scheduling algorithm : FCFS *******************");
+    printf("\n************************************************************\n\n");
 
     fin.open("input.txt", ios::in);
 
@@ -47,6 +47,7 @@ int Process::fcfs(string fileName){
     totalTime = totalTime + p[0].arrival;
     p[0].startTime = 0;
 
+    cout << "(Each star represents 2 ms)" << endl << endl;
     // Calculate required time values.
     for(i = 0; i < PC; i++){
       totalTime = totalTime + p[i].burstTime;
@@ -56,7 +57,11 @@ int Process::fcfs(string fileName){
       p[i+1].startTime = p[i].timeCompleted;
 
       // Print top half of Gantt chart.
-      printf("%*c%d",(p[i].startTime), 'P', i+1);
+      if(i == 0){
+        printf("%*c%d",(p[i].startTime), 'P', i+1);
+      }else{
+        printf("%*c%d",(p[i].startTime), 'P', i+1);
+      }
 
       // If next process arrives after previous finished,
       // calculated difference between finish time and arrival time.

@@ -30,9 +30,9 @@ int Process::rr(string fileName, int quanta){
   float aveWaitTime = 0;
   float aveTurnAround = 0;
 
-  printf("************************************************************\n");
+  printf("\n************************************************************\n");
   printf("************* Scheduling algorithm : RR ********************\n");
-  printf("************************************************************\n");
+  printf("************************************************************\n\n");
 
   fin.open("input.txt");
 
@@ -88,6 +88,7 @@ void Process::updateQueue(process p[], int n, int quanta, queue<int> &readyQueue
     currentTime += p[i].burstTimeRemaining;
     p[i].timeCompleted = currentTime;
     p[i].waitTime = ( p[i].timeCompleted - p[i].arrival - p[i].burstTime );
+    programsExecuted++;
 
     if(p[i].waitTime < 0){
       p[i].waitTime = 0;
@@ -97,8 +98,12 @@ void Process::updateQueue(process p[], int n, int quanta, queue<int> &readyQueue
     p[i].burstTimeRemaining = 0;
 
     // Printing top half of Gantt chart.
-    printf("%*c%d",(p[i].startTime), 'P', i+1);
-
+    // if(i == 0){
+    //   printf("%*c%d",(p[i].startTime), 'P', i+1);
+    // } else {
+      printf("%*c%d", quanta+1, 'P', i+1);
+    // }
+    
     // If the amount of processes executed is less than amount of processes,
     // check for new arrivals.
     if(programsExecuted != n){
@@ -116,7 +121,11 @@ void Process::updateQueue(process p[], int n, int quanta, queue<int> &readyQueue
       p[i].contextSwitches++;
       p[i+1].startTime = currentTime;
 
+      if(i == 0 && programsExecuted < 1){
       printf("%*c%d",(p[i].startTime), 'P', i+1);
+    } else {
+      printf("%*c%d", quanta+1, 'P', i+1);
+    }
 
       if(programsExecuted != n){
         checkNewArrivals(p, n, currentTime, readyQueue);
