@@ -16,8 +16,6 @@
 
 using namespace std;
 
-
-// See definitions below.
 int Process::rr(string fileName, int quanta){
 
   process *p = new process[PC];
@@ -56,6 +54,7 @@ int Process::rr(string fileName, int quanta){
   // Initiaillzing queue with first process.
   readyQueue.push(0);
   p[0].inQueue = true;
+  p[0].startTime = 0;
 
   while(!readyQueue.empty()){
     updateQueue(p, PC, quanta, readyQueue, currentTime, programsExecuted, contextSwitches);
@@ -65,7 +64,7 @@ int Process::rr(string fileName, int quanta){
 
   printResults(p, PC);
   
-  cout << "Average CPU burst time: " << aveBurstTime << " ms" << endl;
+  cout << "\nAverage CPU burst time: " << aveBurstTime << " ms" << endl;
   cout << "Average wait time:  " << aveWaitTime << " ms" << endl;
   cout << "Average turn around time: " << aveTurnAround << " ms" << endl;
   cout << "Total No. of Context Switches performed: " << contextSwitches << endl;
@@ -82,6 +81,8 @@ void Process::updateQueue(process p[], int n, int quanta, queue<int> &readyQueue
   readyQueue.pop();
   contextSwitches++;
 
+  // If process is completed within given quanta burst,
+  // calculate time values and give next process the CPU
   if(p[i].burstTimeRemaining <= quanta && p[i].burstTimeRemaining > 0){
     p[i].processStatus = "Complete";
     currentTime += p[i].burstTimeRemaining;
@@ -95,16 +96,27 @@ void Process::updateQueue(process p[], int n, int quanta, queue<int> &readyQueue
     p[i].turnAround = ( p[i].waitTime + p[i].burstTime );
     p[i].burstTimeRemaining = 0;
 
+    // Printing top half of Gantt chart.
+    printf("%*c%d",(p[i].startTime), 'P', i+1);
+
+    // If the amount of processes executed is less than amount of processes,
+    // check for new arrivals.
     if(programsExecuted != n){
       checkNewArrivals(p, n, currentTime, readyQueue);
     }
-
   }
   else{
+      // If process isn't finished, calculate remaining time.
+      // Increment No. of context switches
+      // Check for new arrivals.
+      // Push unfinished process to back of queue.
       p[i].burstTimeRemaining -= quanta;
       currentTime += quanta;
       p[i].processStatus = "In Process";
       p[i].contextSwitches++;
+      p[i+1].startTime = currentTime;
+
+      printf("%*c%d",(p[i].startTime), 'P', i+1);
 
       if(programsExecuted != n){
         checkNewArrivals(p, n, currentTime, readyQueue);
@@ -114,6 +126,8 @@ void Process::updateQueue(process p[], int n, int quanta, queue<int> &readyQueue
     
 };
 
+// Check to see if any process arrived during the execution of another.
+// If so, push process to back of queue. 
 void Process::checkNewArrivals(process p[], const int n, const int &currentTime, queue<int> &readyQueue){
   for(int i = 0; i < n; i++){
     process proc = p[i];

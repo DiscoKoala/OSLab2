@@ -39,34 +39,36 @@ int Process::fcfs(string fileName){
             break;
         };
         fin >> obj.pidNum >> obj.arrival >> obj.burstTime;
-        obj.processStatus = "New Process";
         p[i] = obj;
         i++;
     };
     fin.close();
 
     totalTime = totalTime + p[0].arrival;
+    p[0].startTime = 0;
 
+    // Calculate required time values.
     for(i = 0; i < PC; i++){
       totalTime = totalTime + p[i].burstTime;
       p[i].timeCompleted = totalTime;
       p[i].turnAround = p[i].timeCompleted - p[i].arrival;
       p[i].waitTime = p[i].turnAround - p[i].burstTime;
+      p[i+1].startTime = p[i].timeCompleted;
 
-      aveBurstTime = aveBurstTime + p[i].burstTime;
-      aveWaitTime = aveWaitTime + p[i].waitTime;
-      aveTurnAround = aveTurnAround + p[i].turnAround;
+      // Print top half of Gantt chart.
+      printf("%*c%d",(p[i].startTime), 'P', i+1);
 
+      // If next process arrives after previous finished,
+      // calculated difference between finish time and arrival time.
+      // Add difference to total time passed.
       if(totalTime < p[i+1].arrival){
         int t = p[i+1].arrival - totalTime;
         totalTime = totalTime + t;
       };
-  
     };
 
-    aveBurstTime = aveBurstTime/PC;
-    aveWaitTime = aveWaitTime/PC;
-    aveTurnAround = aveTurnAround/PC;
+    // Calculate averages.
+    averageTimes(aveWaitTime, aveBurstTime, aveTurnAround, p);
 
     printResults(p, PC);
 
@@ -78,11 +80,14 @@ int Process::fcfs(string fileName){
   return 0;
 }
 
+// 
 void Process::printResults(process p[], int n){
 
-  printf("");
-  printf("*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *\n\n");  
-  printf("pid  arrival  CPU-burst  finish  waiting time  turn around  No.of context\n");
+  // Bottom half of Gantt chart.
+  printf("\n* * * * * * * * * * * * * * * * * * * * * * * * * *\n\n");  
+
+  // Display table.
+  printf("pid  arrival  CPU-burst  finish  waiting time  turn around  No.of context\n");  
   for(int i = 0; i < n; i++){
     printf("%-2d   %-2d       %-2d         %-2d      %-2d            %-2d           %-2d\n",
             p[i].pidNum,
@@ -91,6 +96,7 @@ void Process::printResults(process p[], int n){
             p[i].timeCompleted,
             p[i].waitTime,
             p[i].turnAround,
-            p[i].contextSwitches);
+            p[i].contextSwitches
+          );
   }
 };

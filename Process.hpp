@@ -7,6 +7,7 @@
 
 class Process{
     public: 
+        // Process object struct
         struct process{
             int pidNum;
             int arrival;
@@ -21,8 +22,10 @@ class Process{
             int contextSwitches = 0;
         };  
 
-        int PC = 10;
+        // Process count.
+        int PC = 4;
 
+        // Scheduling algorithm declarations.
         int rr(std::string fileName, int quanta);
         int srtf(std::string fileName);
         int fcfs(std::string fileName);

@@ -48,17 +48,16 @@ int Process::srtf(string fileName){
     };
     fin.close();
 
-    readyQueue.push_back(0);
-
     updateVQueue(p, PC, currentTime, programsExecuted, contextSwitches);
 
     averageTimes(aveWaitTime, aveBurstTime, aveTurnAround, p);
     printResults(p, PC);
 
-  cout << "Average CPU burst time: " << aveBurstTime << " ms" << endl;
+  cout << "\nAverage CPU burst time: " << aveBurstTime << " ms" << endl;
   cout << "Average wait time:  " << aveWaitTime << " ms" << endl;
   cout << "Average turn around time: " << aveTurnAround << " ms" << endl;
   cout << "Total No. of Context Switches performed: " << contextSwitches << endl;
+  
   return 0;
 }
 
@@ -71,27 +70,36 @@ void Process::updateVQueue(process p[], int n, int &currentTime, int &programsEx
   // Loop process until all processes are completed.
   while (complete != n){
 
+    // If a new process arrived with a shorter remaining time,
+    // Preempt current process for new process.
     for(int i = 0; i < n; i++){
       if (p[i].burstTimeRemaining < min && (p[i].burstTimeRemaining > 0) && (p[i].arrival <= currentTime)){
         min = p[i].burstTimeRemaining;
         idx = i;
         check = true;
         p[i].contextSwitches++;
+        p[i].startTime = currentTime;
         contextSwitches++;
+
+        // Top half of Gantt chart.
+        cout << 'P' << i+1;
       };
     };
 
+    // If nothing arrived with a shorter remaining time, go to top of loop.
     if (check == false && complete < n){
       currentTime++;
       continue;
     };
 
+    // Decrement remaining burst time of current process.
     p[idx].burstTimeRemaining--;
     min = p[idx].burstTimeRemaining;
     if(min == 0){
       min = INT_MAX;
     }
 
+    // When process is finsihed, calculate time values
     if(p[idx].burstTimeRemaining == 0){
       complete++;
       check = false;
@@ -104,6 +112,9 @@ void Process::updateVQueue(process p[], int n, int &currentTime, int &programsEx
         p[idx].waitTime = 0;
       };
     }
+
+    // Top half of Gantt chart and increment time.
+    cout << "  ";
     currentTime++;
   };
 };
