@@ -29,34 +29,30 @@ int Process::srtf(string fileName){
 
     printf("************************************************************\n");
     printf("************ Scheduling algorithm : SRTF *******************\n");
-    printf("************************************************************\n");
+    printf("************************************************************\n\n");
 
     fin.open("input.txt");
 
-   while(true){
+    while(true){
 
-    if(fin.eof()){
-        break;
+      if(fin.eof()){
+          break;
+      };
+
+      // Read data from file into process object and add to array.
+      fin >> obj.pidNum >> obj.arrival >> obj.burstTime;
+      obj.burstTimeRemaining = obj.burstTime;
+      obj.processStatus = "New Process";
+      p[i] = obj;
+      i++;
     };
-
-    // Read data from file into process object and add to array.
-    fin >> obj.pidNum >> obj.arrival >> obj.burstTime;
-    obj.burstTimeRemaining = obj.burstTime;
-    obj.processStatus = "New Process";
-    p[i] = obj;
-    i++;
-   };
     fin.close();
 
- // Initiaillzing queue with first process.
-  readyQueue.push_back(0);
-  p[0].inQueue = true;
+    readyQueue.push_back(0);
 
-  while(!readyQueue.empty()){
-    updateVQueue(p, PC, readyQueue, currentTime, programsExecuted, contextSwitches);
-  }
+    updateVQueue(p, PC, currentTime, programsExecuted, contextSwitches);
 
-  averageTimes(aveWaitTime, aveBurstTime, aveTurnAround, p);
+    averageTimes(aveWaitTime, aveBurstTime, aveTurnAround, p);
   
   cout << "Average CPU burst time: " << aveBurstTime << " ms" << endl;
   cout << "Average wait time:  " << aveWaitTime << " ms" << endl;
@@ -65,61 +61,52 @@ int Process::srtf(string fileName){
   return 0;
 }
 
-void Process::updateVQueue(process p[], int n, vector<int> &readyQueue, int &currentTime, int &programsExecuted, int &contextSwitches){
+void Process::updateVQueue(process p[], int n, int &currentTime, int &programsExecuted, int &contextSwitches){
+  int min = INT_MAX;
   int complete = 0;
-  bool check;
+  int idx = 0;
+  bool check = false;
 
   // Loop process until all processes are completed.
   while (complete != n){
 
-    if(int i = compareBursts(p, PC, currentTime, readyQueue) > 0){
-      contextSwitches++;
-      check = true;
-
-      if(p[i].burstTimeRemaining <= 0){
-        p[i].processStatus = "Complete";
-        p[i].timeCompleted = currentTime + 1;
-        p[i].waitTime = ( p[i].timeCompleted - p[i].arrival - p[i].burstTime );
-
-        if(p[i].waitTime < 0){
-          p[i].waitTime = 0;
-        };
-        
-        p[i].turnAround = ( p[i].waitTime + p[i].burstTime );
-        p[i].burstTimeRemaining = 0;
-
-        if(programsExecuted != n){
-          checkNewArrivals(p, n, currentTime, readyQueue);
-        }
-        readyQueue.erase(readyQueue.begin()+(i-1));
-        complete++;
-      }
-
-      else{
-          p[i].burstTimeRemaining--;
-          p[i].processStatus = "In Process";
-
-          if(programsExecuted != n){
-            checkNewArrivals(p, n, currentTime, readyQueue);
-          };
-        };
+    for(int i = 0; i < n; i++){
+      if (p[i].burstTimeRemaining < min && (p[i].burstTimeRemaining > 0) && (p[i].arrival <= currentTime)){
+        min = p[i].burstTimeRemaining;
+        idx = i;
+        check = true;
+      };
     };
+
+    if (check == false && complete < n){
+      currentTime++;
+      continue;
+    };
+
+    p[idx].burstTimeRemaining--;
+    min = p[idx].burstTimeRemaining;
+    if(min == 0){
+      min = INT_MAX;
+    }
+
+    if(p[idx].burstTimeRemaining == 0){
+      complete++;
+      contextSwitches++;
+      check = false;
+
+      p[idx].timeCompleted = currentTime + 1;
+      p[idx].waitTime = ( p[idx].timeCompleted - p[idx].arrival - p[idx].burstTime );
+      p[idx].turnAround = (p[idx].waitTime + p[idx].burstTime);
+
+      if(p[idx].waitTime < 0){
+        p[idx].waitTime = 0;
+      };
+    }
     currentTime++;
   };
 };
 
-void Process::checkNewArrivals(process p[], const int n, const int &currentTime, vector<int> &readyQueue){
-  for(int i = 0; i < n; i++){
-    process proc = p[i];
-
-    if(proc.arrival <= currentTime && !proc.inQueue && proc.processStatus != "Complete"){
-      p[i].processStatus = "New Process";
-      p[i].inQueue = true;
-      readyQueue.push_back(i);
-    };
-  };
-};
-
+// Calculate averages 
 void Process::averageTimes(float &aveWaitTime, float &aveBurstTime, float & aveTurnAround, process p[]){
 
   for(int i = 0; i < PC; i++){
@@ -127,20 +114,19 @@ void Process::averageTimes(float &aveWaitTime, float &aveBurstTime, float & aveT
     aveWaitTime += p[i].waitTime;
     aveTurnAround += p[i].turnAround;
   };
-
   aveBurstTime = aveBurstTime/PC;
   aveWaitTime = aveWaitTime/PC;
   aveTurnAround = aveTurnAround/PC;
-
-
 };
 
+// If a new process arrives, check it's burst time.
+// If it has a shorter burst time, return index.
 int Process::compareBursts(process p[], int n, int &currentTime, vector<int>readyQueue){
   int min = p[0].burstTimeRemaining;
   int idx = 0;
 
   for(int i = 0; i < n; i++){
-    if (p[i].burstTimeRemaining < min && p[i].arrival <= currentTime){
+    if (p[i].burstTimeRemaining < min){
       min = p[i].burstTimeRemaining;
       idx = i;
     };

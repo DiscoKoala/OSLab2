@@ -22,15 +22,13 @@ class Process{
 
         int PC = 10;
 
-
         int rr(std::string fileName, int quanta);
         int srtf(std::string fileName);
         int fcfs(std::string fileName);
 
         void updateQueue(process p[], int n, int quanta, std::queue<int> &readyQueue, int &currentTime, int &programsExecuted, int &contextSwitches);
-        void updateVQueue(process p[], int n, std::vector<int> &readyQueue, int &currentTime, int &programsExecuted, int &contextSwitches);
+        void updateVQueue(process p[], int n, int &currentTime, int &programsExecuted, int &contextSwitches);
         
-        void checkNewArrivals(process p[], const int n,  const int &currentTime, std::vector<int> &readyQueue);
         void checkNewArrivals(process p[], const int n,  const int &currentTime, std::queue<int> &readyQueue);
         
         int compareBursts(process p[], int n, int &currentTime, std::vector<int>readyQueue);
