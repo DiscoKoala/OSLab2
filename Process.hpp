@@ -18,6 +18,7 @@ class Process{
             int turnAround = 0;
             std::string processStatus;
             bool inQueue = false;
+            int contextSwitches = 0;
         };  
 
         int PC = 10;
@@ -31,9 +32,9 @@ class Process{
         
         void checkNewArrivals(process p[], const int n,  const int &currentTime, std::queue<int> &readyQueue);
         
-        int compareBursts(process p[], int n, int &currentTime, std::vector<int>readyQueue);
-        
         void averageTimes(float &aveWaitTime, float &aveBurstTime, float & aveTurnAround, process p[]);
+
+        void printResults(process p[], int n);
 };
 
 #endif

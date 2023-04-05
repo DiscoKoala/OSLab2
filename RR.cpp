@@ -62,6 +62,8 @@ int Process::rr(string fileName, int quanta){
   }
 
   averageTimes(aveWaitTime, aveBurstTime, aveTurnAround, p);
+
+  printResults(p, PC);
   
   cout << "Average CPU burst time: " << aveBurstTime << " ms" << endl;
   cout << "Average wait time:  " << aveWaitTime << " ms" << endl;
@@ -102,6 +104,7 @@ void Process::updateQueue(process p[], int n, int quanta, queue<int> &readyQueue
       p[i].burstTimeRemaining -= quanta;
       currentTime += quanta;
       p[i].processStatus = "In Process";
+      p[i].contextSwitches++;
 
       if(programsExecuted != n){
         checkNewArrivals(p, n, currentTime, readyQueue);
@@ -123,3 +126,4 @@ void Process::checkNewArrivals(process p[], const int n, const int &currentTime,
   }
 
 };
+

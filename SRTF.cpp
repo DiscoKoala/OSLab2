@@ -53,7 +53,8 @@ int Process::srtf(string fileName){
     updateVQueue(p, PC, currentTime, programsExecuted, contextSwitches);
 
     averageTimes(aveWaitTime, aveBurstTime, aveTurnAround, p);
-  
+    printResults(p, PC);
+
   cout << "Average CPU burst time: " << aveBurstTime << " ms" << endl;
   cout << "Average wait time:  " << aveWaitTime << " ms" << endl;
   cout << "Average turn around time: " << aveTurnAround << " ms" << endl;
@@ -75,6 +76,8 @@ void Process::updateVQueue(process p[], int n, int &currentTime, int &programsEx
         min = p[i].burstTimeRemaining;
         idx = i;
         check = true;
+        p[i].contextSwitches++;
+        contextSwitches++;
       };
     };
 
@@ -91,7 +94,6 @@ void Process::updateVQueue(process p[], int n, int &currentTime, int &programsEx
 
     if(p[idx].burstTimeRemaining == 0){
       complete++;
-      contextSwitches++;
       check = false;
 
       p[idx].timeCompleted = currentTime + 1;
@@ -117,19 +119,4 @@ void Process::averageTimes(float &aveWaitTime, float &aveBurstTime, float & aveT
   aveBurstTime = aveBurstTime/PC;
   aveWaitTime = aveWaitTime/PC;
   aveTurnAround = aveTurnAround/PC;
-};
-
-// If a new process arrives, check it's burst time.
-// If it has a shorter burst time, return index.
-int Process::compareBursts(process p[], int n, int &currentTime, vector<int>readyQueue){
-  int min = p[0].burstTimeRemaining;
-  int idx = 0;
-
-  for(int i = 0; i < n; i++){
-    if (p[i].burstTimeRemaining < min){
-      min = p[i].burstTimeRemaining;
-      idx = i;
-    };
-  };
-  return idx;
 };

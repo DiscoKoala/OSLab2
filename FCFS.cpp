@@ -1,11 +1,10 @@
-#ifndef FCFS
-#define FCFS
 /*
   Wesley B Johnson
   Due date: April 04, 2023
   Function: First Come First Server Process Scheduler
   Source: https://www.geeksforgeeks.org/program-for-fcfs-cpu-scheduling-set-2-processes-with-different-arrival-times/?ref=rp
 */
+
 #include <string>
 #include <iostream>
 #include <iomanip>
@@ -63,27 +62,35 @@ int Process::fcfs(string fileName){
         totalTime = totalTime + t;
       };
   
-      cout << "Completion time: "<< p[i].timeCompleted << endl;
-      cout << "Turn around time: " << p[i].turnAround << endl;
-      cout << "Wait time: " << p[i].waitTime << endl;
     };
 
     aveBurstTime = aveBurstTime/PC;
     aveWaitTime = aveWaitTime/PC;
     aveTurnAround = aveTurnAround/PC;
 
-    cout << "" << endl;
-    cout << "*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  * " << endl;
-    cout << "0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29" << endl << endl;
+    printResults(p, PC);
 
-    cout << "Average CPU burst time: " << aveBurstTime << " ms" << endl;
+    cout << "\nAverage CPU burst time: " << aveBurstTime << " ms" << endl;
     cout << "Average wait time:  " << aveWaitTime << " ms" << endl;
     cout << "Average turn around time: " << aveTurnAround << " ms" << endl;
     cout << "Total No. of Context Switches performed: 0" << " ms" << endl;
 
-  // delete p;
-
   return 0;
 }
 
-#endif
+void Process::printResults(process p[], int n){
+
+  printf("");
+  printf("*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *\n\n");  
+  printf("pid  arrival  CPU-burst  finish  waiting time  turn around  No.of context\n");
+  for(int i = 0; i < n; i++){
+    printf("%-2d   %-2d       %-2d         %-2d      %-2d            %-2d           %-2d\n",
+            p[i].pidNum,
+            p[i].arrival,
+            p[i].burstTime,
+            p[i].timeCompleted,
+            p[i].waitTime,
+            p[i].turnAround,
+            p[i].contextSwitches);
+  }
+};
